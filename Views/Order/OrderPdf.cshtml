@@ -1,0 +1,742 @@
+﻿@model List<Soc_Management_Web.Models.InqueryReportModel>
+@{
+    Layout = null;
+    var basiInfo = Model[0];
+    var uniqu = Model.Select(p => p.IntEvnNm).Distinct();
+    decimal netamount = 0;
+    int a = 0;
+    int b = 0;
+    int globalcount = 0;
+    var cusometrmk = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Quotation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="width" />
+
+    <style>
+        body {
+            background: #fff;
+            color: #332f32;
+            font-size: 16px;
+            font-family: "Times New Roman",serif
+        }
+
+        .custom-table {
+            border: 2px solid black; /* Table border */
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .space-after {
+            margin-left: 5ch; /* 2 character spaces */
+        }
+
+        .custom-table td {
+            border: none; /* Remove cell borders */
+            padding: 6px;
+            text-align: left;
+            line-height: 1;
+        }
+
+
+        .extraRs {
+            font-family: "Times New Roman",serif
+        }
+
+        h1, h2, b, strong, .name, .funBox .fnTitle, .itemBox, .extraInfo, .infoBox, .signature, .funTotal {
+            font-family: sans-serif
+        }
+
+        .texformation {
+            font-family: sans-serif;
+            font: bold;
+            font-size: 12px;
+            color: black;
+            text-align: justify;
+        }
+
+        .texformation1 {
+            font-family: sans-serif;
+            font: bold;
+            font-size: 12px;
+            color: black;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            word-wrap: break-word
+        }
+
+        ul li  {
+            list-style: none
+        }
+
+        h1, h2 {
+            text-align: center;
+            font-weight: 700
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 8px 0;
+            color: #000080
+        }
+
+        h2 {
+            font-size: 17px;
+            margin: 10px 0 34px;
+            text-decoration: underline;
+            text-transform: uppercase
+        }
+
+        img {
+            border: none;
+            outline: none;
+            -moz-user-select: none;
+            user-select: none;
+            max-width: 100%;
+            display: block
+        }
+
+        p {
+            margin-bottom: 6px;
+            font-size: 18px
+        }
+
+        b {
+            font-size: 17px;
+            color: black !important
+        }
+
+        strong {
+            display: block;
+            font-size: 14px
+        }
+
+        .quataion {
+            width: 100%
+        }
+
+            .quataion .container {
+                max-width: 100%;
+                margin: 0 auto
+            }
+
+        .flex {
+            display: flex;
+            margin-bottom: 6px
+        }
+
+        .addressBox {
+            width: 100%;
+            margin-left: 14px
+        }
+
+            .addressBox .flex b {
+                margin-left: 6px
+            }
+
+        .headBox {
+            width: 100%;
+            border-bottom: 2px solid #000
+        }
+
+        .mainBox {
+            width: 100%;
+            margin-top: 10px
+        }
+
+        .funBoxWrap {
+            width: 100%;
+            border: 1px solid #000
+        }
+
+        .inerContnr {
+            width: 100%;
+            max-width: 98%;
+            margin: 0 auto
+        }
+
+        .dateBox {
+            margin-bottom: 10px
+        }
+
+        .name {
+            margin: 10px 0;
+            display: block;
+            font-size: 18px;
+        }
+
+        .funBox .fnTitle {
+            width: 66px;
+            display: inline-block;
+            vertical-align: top
+        }
+
+        .funBox .fnInfo {
+            margin-left: 30px;
+            font-size: 14px;
+            width: 80%;
+            display: inline-block
+        }
+
+        .funBox .fnTName {
+            font-size: 19px
+        }
+
+        .funBox .flex {
+            margin-bottom: 10px;
+            max-width: 80%
+        }
+
+        .funBox {
+            border-bottom: 2px solid #000;
+            padding: 10px 8px;
+            position: relative
+        }
+
+            .funBox:after, .funTotal:after {
+                position: absolute;
+                content: '';
+                width: 1px;
+                height: 100%;
+                right: 19%;
+                background-color: #6c6c6c;
+                top: 0
+            }
+
+            .funBox:before {
+                position: absolute;
+                content: '';
+                width: 47%;
+                height: 1px;
+                right: 0;
+                border-bottom: 1px dashed #6c6c6c;
+                bottom: 38px
+            }
+
+        .itemBox {
+            width: 100%;
+            font-weight: 700;
+            display: flex;
+            vertical-align: top
+        }
+
+            .itemBox .itemNme {
+                width: 54%;
+                display: inline-block;
+                vertical-align: top
+            }
+
+            .itemBox .itemQty {
+                width: 8%;
+                display: inline-block;
+                vertical-align: top
+            }
+
+            .itemBox .itemRate {
+                width: 16%;
+                display: inline-block;
+                vertical-align: top;
+                text-align: center
+            }
+
+            .itemBox .itemFinal {
+                width: 19%;
+                display: inline-block;
+                text-align: right;
+                padding-left: 20px
+            }
+
+            .itemBox .itemFinalLast {
+                padding-top: 15px;
+                display: block
+            }
+
+
+
+        .infoBox {
+            width: 100%;
+            margin: 18px 14px
+        }
+
+            .infoBox ul {
+                margin: 16px 0
+            }
+
+            .infoBox b {
+                font-size: 14px
+            }
+
+        .extraInfo {
+            margin-left: 14px
+        }
+
+            .extraInfo .extInTitle {
+                font-weight: 500;
+                font-size: 24px;
+                text-decoration: underline
+            }
+
+        .extraBxWrp {
+            width: 100%;
+            display: inline-block;
+            max-width: 100%
+        }
+
+        .extraBox {
+            display: flex
+        }
+
+        .extraInfo .extraNam {
+            width: 60%;
+            display: inline-block;
+            padding-right: 10px;
+            font-size: 18px;
+        }
+
+        .extraInfo .extraPriz {
+            width: 35%;
+            display: inline-block;
+            padding-left: 20px
+        }
+
+        .signature {
+            margin: 24px 0;
+            margin-left: 14px
+        }
+
+            .signature b {
+                padding-left: 10px
+            }
+
+            .signature strong {
+                margin-bottom: 4px;
+                font-weight: 700;
+                font-size: 15px
+            }
+
+        .infoBox ul li {
+            position: relative
+        }
+
+            .infoBox ul li:before {
+                text-indent: -5px;
+                position: absolute;
+                left: 14px;
+                top: 0;
+            }
+
+            .infoBox ul li p {
+                padding-left: 34px
+            }
+
+        .funTotal {
+            width: 100%;
+            text-align: right;
+            font-weight: 700;
+            padding: 4px 0
+        }
+
+        .funTotal {
+            position: relative;
+        }
+
+            .funTotal .totalRow {
+                width: 100%;
+                padding-right: 20px
+            }
+
+                .funTotal .totalRow span {
+                    width: 25%;
+                    display: inline-block
+                }
+
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+
+</head>
+<body>
+
+    <section class="quataion">
+        <div class="container">
+            <div class="headBox">
+                <h1>Order Confirmation</h1>
+            </div>
+            <div class="mainBox">
+                <div class="inerContnr">
+
+                    <div class="addressBox">
+                        <div class="dateBox flex">
+                            <abbr>Date </abbr>
+                            <b>@basiInfo.InqDt</b>
+                        </div>
+                        <p>Respected,</p>
+                        <strong class="name">@basiInfo.AccNm </strong>
+                        <p style="text-transform:uppercase">@basiInfo.AccAdd1 </p>
+                        @*<p style="text-transform:uppercase">@basiInfo.Add2 </p>*@
+                        <p style="text-transform:uppercase">@basiInfo.area @basiInfo.city</p>
+                        @*<p style="text-transform:uppercase">@basiInfo.city</p>*@
+
+                        <div class="dmobBox flex">
+                            <abbr>Mobile&nbsp;&nbsp;&nbsp;: </abbr>
+
+                            <b>@basiInfo.AccMob</b>
+                        </div>
+
+                        <div class="emilBox flex">
+                            <abbr>Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </abbr>
+                            <b>@basiInfo.AccEmail</b>
+                        </div>
+                        <div class="emilBox flex">
+                            <abbr>Function&nbsp;: </abbr>
+                            <b>@basiInfo.InqTitle</b>
+                        </div>
+                    </div>
+                    <div>
+                        <h2>@Model[0].Heading</h2>
+                        <p style="text-align:center;margin-top:-23px;margin-bottom:1%"><b>@Model[0].header</b></p>
+
+                        <table class="custom-table" style="width:100% !important">
+                            @{ int count = 0;
+                                bool firstBreak = true; // Flag to handle the first page break condition
+                            }
+                            @foreach (var item in uniqu)
+                            {
+
+                                if (firstBreak && count == 2) // First break after 2 records
+                                {
+                                    globalcount = count;
+                                    firstBreak = false; // Disable first break condition
+                                    count = 0; // Reset count for subsequent records
+                                @:</table>
+                                <div class="page-break"></div>
+                                @:<table class="custom-table" style="width:100% !important">
+                                }
+                                else if (!firstBreak && count > 0 && count % 3 == 0) // Subsequent breaks after every 3 records
+                                {
+                                    globalcount = count;
+                                    count = 0;
+                                @:</table>
+                                <div class="page-break"></div>
+                                @:<table class="custom-table" style="width:100% !important">
+                                }
+
+                                var Inquery1 = (from d in Model
+                                                where d.IntEvnNm == item
+                                                select d).ToList();
+                                <tr>
+
+                                    <td colspan="5">
+                                        <div style="line-height:25px">
+                                            <div><span class="texformation1" style="padding-right:10px;">Function </span> :  <b style="padding-left:20px; font-size:16px; color:black">@Inquery1[0].IntEvnNm</b></div>
+                                            <div><span class="texformation1" style="padding-right:32px;">Date  </span> :  <b style="padding-left:20px;font-size:14px;text-align:left">@Inquery1[0].IntOccDt   @Inquery1[0].Todate</b></div>
+                                            <div>
+
+
+                                                <span class="texformation1" style="padding-right:30px;">Time </span> :  <b style="padding-left:20px;font-size:14px">
+                                                    @Inquery1[0].IntFrTm To  @Inquery1[0].IntToTm     @if (!string.IsNullOrEmpty(Inquery1[0].IntEveHrs))
+                                                        @($"({Inquery1[0].IntEveHrs} Hours)")
+
+                                                </b>
+                                            </div>
+
+
+                                            <div><abbr class="texformation1" style="padding-right:24px;">Venue </abbr> :  <b style="padding-left:20px;font-size:15px">@Inquery1[0].IntVenNm</b></div>
+                                            @if (Inquery1[0].VenuLink != "")
+                                            {
+                                                <div><abbr class="texformation1" style="padding-right:25px;">G Link </abbr> :  <a target="_blank" href="@Inquery1[0].VenuLink" style="padding-left:20px;font-size:15px">@Inquery1[0].VenuLink</a></div>
+
+
+                                            }
+                                            @if (Inquery1[0].VenueToAddOne != "")
+                                            {
+                                                <div><abbr class="texformation1" style="padding-right:8px;">Venue To </abbr> :  <b style="padding-left:20px;font-size:15px">@Inquery1[0].VenueToAddOne</b></div>
+
+                                            }
+
+                                            @*@if (Inquery1[0].customerremarks != "")
+                                {
+                                    <div><span class="texformation1" style="padding-right:25px;">Notes  </span> :  <b style="font-weight:normal; padding-left:20px;font-size:14px; ">@Inquery1[0].customerremarks   </b></div>
+
+                                }*@
+                                        </div>
+                                    </td>
+                                    <td colspan="2" style="border-left:1px solid;border-right:2px solid black   "></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" style="width:90%"></td>
+                                    <td><p class="texformation" style="text-align:right"><b style="font-size:15px">Qty</b></p> </td>
+                                    <td><p class="texformation" style="text-align:center;margin-right:10px"><b style="font-size:15px">Rate</b></p></td>
+                                    <td><p class="texformation" style="text-align:right;"><b style="font-size:15px">Discount</b></p></td>
+                                    <td colspan="2" style="border-left:1px solid;border-right:2px solid black   "></td>
+                                </tr>
+
+
+
+                                netamount = 0;
+                                var rowscount = 0;
+                                cusometrmk = "";
+                                @foreach (var item1 in Inquery1)
+                                {
+                                    rowscount++;
+
+                                    var t = (item1.IntQty * item1.IntRt) - item1.disamt;
+                                    netamount = netamount + t;
+                                    @if (string.IsNullOrEmpty(cusometrmk))
+                                    {
+                                        cusometrmk = @item1.customerremarks;
+                                    }
+                                    else
+                                    {
+                                        cusometrmk += ", " + @item1.customerremarks;
+                                    }
+                                    @if (!string.IsNullOrEmpty(cusometrmk) && cusometrmk.EndsWith(", "))
+                                    {
+                                        cusometrmk = cusometrmk.Substring(0, cusometrmk.Length - 2);
+                                    }
+
+
+                                    <tr height="10px">
+                                        <td colspan="2" style="width:95%; height:8px; padding: 4px; margin: 4px;">
+
+                                            <p class="texformation" style="margin: 0;">
+                                                <b style="font-size:13px;">@item1.JobNm</b>
+                                            </p>
+
+                                            @if (rowscount == Inquery1.Count)
+                                            {
+                                                @if (cusometrmk != "")
+                                                {
+                                                    <div style="margin-top:1%"><span class="texformation1" style="padding-right:25px;">Notes  </span> :  <b style="font-weight:normal; padding-left:20px;font-size:14px; ">@cusometrmk  </b></div>
+
+                                                }
+                                            }
+                                        </td>
+                                        <td style="height: 10px; padding: 4px; margin: 4px;">
+                                            <p class="texformation" style="text-align:right; margin: 0;">
+                                                <b style="text-align:right" class="space-after">
+                                                    @if (@item1.IntQty > 0)
+                                                    {
+                                                        @item1.IntQty.ToString()
+                                                    }
+                                                    &nbsp; &nbsp;
+                                                </b>
+                                            </p>
+                                        </td>
+                                        <td style="height: 10px; padding: 4px; margin: 4px;">
+                                            <p class="texformation" style="text-align:right; margin: 0;">
+                                                <b style="text-align:right" class="space-after">
+                                                    @if (@item1.IntRt > 0)
+                                                    {
+                                                        @item1.IntRt.ToString()
+                                                    }
+
+                                                    &nbsp; &nbsp;
+                                                </b>
+                                            </p>
+                                        </td>
+                                        <td style="height: 10px; padding: 4px; margin: 4px;">
+                                            <p class="texformation" style="text-align:right; margin-top:-10px;">
+                                                @if (@item1.disamt > 0)
+                                                {
+                                                    <b style="text-align:right">@item1.disamt.ToString("0")</b>
+                                                }
+                                            </p>
+                                        </td>
+                                        <td colspan="2" style="border-left: 1px solid; border-right: 2px solid black; width: 30px; height: 10px;padding: 4px; margin: 4px;">
+                                            <p class="texformation" style="        text-align: right;
+        margin-top: -10px;
+">
+                                                @if (t != 0)
+                                                {
+                                                    <b>@t.ToString("N2")</b>
+                                                }
+
+                                            </p>
+                                        </td>
+                                    </tr>
+
+
+
+                                }
+
+                                <tr style="border-bottom:solid 1px">
+                                    <td colspan="3"></td>
+                                    <td colspan="2" style="border-top:1px dotted;">
+                                        <p class="texformation" style="text-align: right; font-size:15px"><b>Sub Total :</b></p>
+                                    </td>
+                                    <td colspan="2" style="border-left: 1px solid;
+        border-top:1px dotted;border-right:2px solid black
+                                        ">
+                                        <p class="texformation" style="text-align:right">
+                                            <b> @netamount.ToString("N2")</b>
+                                        </p>
+                                    </td>
+                                </tr>
+                                count++;
+
+
+                            }
+                            @if (Model[0].totaldiscount > 0)
+                            {
+                                <tr>
+                                    <td colspan="5" style="        text-align: right;
+        border-right: 1px solid black
+">
+                                        <p class="texformation" style="text-align:right"><b style="font-size: 15px">Discount :</b></p>
+                                    </td>
+                                    <td colspan="2" style="border-right: 2px solid black">
+                                        <p class="texformation" style="text-align:right">
+                                            <b>
+                                                @if (Model[0].totaldiscount != 0)
+                                                {
+                                                    @Model[0].totaldiscount.ToString("N2")
+                                                }
+                                            </b>
+                                        </p>
+                                    </td>
+                                </tr>
+                            }
+                            <tr style="border-top: 1px solid black">
+                                <td colspan="5" style="        text-align: right;
+        border-right: 1px solid black
+">
+                                    <p class="texformation" style="text-align:right"><b>Total :</b></p>
+                                </td>
+                                <td colspan="2" style="border-right: 2px solid black">
+                                    <p class="texformation" style="text-align:right">
+                                        <b>
+                                            @if (Model[0].totalnet != 0)
+                                            {
+                                                @Model[0].totalnet.ToString("N2")
+                                            }
+
+                                        </b>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    @if (globalcount > 2)
+                    {
+                        <div class="page-break"></div>
+                    }
+
+                    <div class="infoBox">
+                        <div class="inoCopy">
+                            @if (Model[0].Inclusive.Any(inclusive => !string.IsNullOrEmpty(inclusive.IncTncDesc)))
+                            {
+                                <b>All Below Packages Inclusive of</b>
+                            }
+
+                            <ul>
+                                @foreach (var item in Model[0].Inclusive)
+                                {
+                                    if (!string.IsNullOrEmpty(item.IncTncDesc))
+                                    {
+                                        <li>
+                                            <p style="font-size:15px !important">
+                                                @item.IncTncDesc
+                                            </p>
+                                        </li>
+                                    }
+                                }
+
+
+                            </ul>
+                        </div>
+                        <div class="inoCopy">
+                            @if (Model[0].exclusive.Any(exclusive => !string.IsNullOrEmpty(exclusive.IExTncDesc)))
+                            {
+                                <b>All Below Packages Exclusive of</b>
+                            }
+                            <ul>
+                                <li>
+                                    @foreach (var item in Model[0].exclusive)
+                                    {
+                                        if (!string.IsNullOrEmpty(item.IExTncDesc))
+                                        {
+
+                                            <p style="font-size:15px !important">
+                                                @item.IExTncDesc
+                                            </p>
+
+                                        }
+                                    }
+
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                    @*<div class="page-break"></div>*@
+                    @if (globalcount > 2)
+                    {
+                        <div class="page-break"></div>
+                    }
+                    <div class="extraInfo">
+                        @if (Model[0].ExtraItem.Count > 0)
+                        {
+                            <p class="extInTitle">Extra Items</p>
+                        }
+
+                        <div class="extraBxWrp">
+                            @foreach (var item in Model[0].ExtraItem)
+                            {
+                                <div class="extraBox">
+                                    <span class="extraNam" style="font-size:15px !important">@item.IteEitNm</span>
+                                    <abbr class="extraRs" style="font-size: 15px !important;
+        text-align: right
+">Rs.</abbr>
+                                    <span class="extraPriz" style="font-size:15px !important;text-align:right; width:90px "> @item.IteEitAmt</span>
+                                </div>
+                            }
+
+                        </div>
+                        <br />
+                        @if (Model[0].tandc.Count > 0)
+                        {
+                            <p class="extInTitle">Term & Condition </p>
+
+                        }
+                        <table>
+
+
+                            @foreach (var item in Model[0].tandc)
+                            {
+                                <tr>
+                                    <td colspan="2" style="width:100px"><p>@item.item</p></td>
+                                    <td colspan="5" style="width:90%"><p>@item.desc</p></td>
+                                </tr>
+
+                            }
+                        </table>
+                    </div>
+
+                    <div class="signature">
+                        <strong>@Model[0].OwnerName</strong>
+                        <div class="flex">
+                            <abbr>Mobile - </abbr>
+                            <b> @Model[0].mobile</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

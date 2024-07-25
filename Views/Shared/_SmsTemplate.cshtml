@@ -1,0 +1,207 @@
+﻿@model List<Soc_Management_Web.Models.SMSTemplate>
+<div class="col-md-12" style="margin-right:0px;margin-left:0px;width:110%">
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="tableextraiem" class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+                        <th><input type="checkbox" id="ckall" /></th>
+                        <th>Customer</th>
+                        <th>Mobile</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody style="width:100%" id="tblsmstemple">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.sl</td>
+                            <td><input type="checkbox" class="myCheckbox" /> </td>
+                            <td>@item.customer</td>
+                            <td class="mobile"><input type="text" readonly class="form-control" value="@item.mobile" /> </td>
+                            <td>@item.category</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <input type="button" class="btn btn-primary" value="Add New" id="btnaddnewlist" />
+        </div>
+        <div class="col-md-2">
+            <label>Template</label>
+        </div>
+        <div class="col-md-6">
+            <select class="form-control" id="ddltemplatte">
+                <option value="0">--Select--</option>
+                @if (Model[0].types == "Inquery")
+                {
+                    <option value="Inqury">Inqury</option>
+                    <option value="Inqury Details">Inqury Details</option>
+                    <option value="Inqury Confirm">Inqury Confirm</option>
+                    <option value="Inqury Confirmed">Inqury Confirmed</option>
+                    <option value="Inqury Job Details">Inqury Job Details</option>
+                    <option value="Inqury 2">Inqury 2</option>
+                }
+                else if (Model[0].types == "Order")
+                {
+            <option value="Photography">Photography</option>
+            <option value="Video & Photography">Video & Photography</option>
+               
+                }
+
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input type="button" class="btn btn-primary" value="View" id="btnviewtempalte" />
+        </div>
+    </div>
+    <div class="row mt-2">
+
+        <div class="col-md-2">
+            <label>Message</label>
+        </div>
+        <div class="col-md-10">
+            <textarea class="form-control" style="min-height:200px;text-align:left" role="4" cols="6" id="txtmessage"></textarea>
+        </div>
+
+    </div>
+
+    <div class="row mt-2">
+
+        <div class="col-md-12 " style="text-align:right">
+            <input type="button" value="Send" class="btn btn-primary" id="btnsendsms123" />
+        </div>
+       
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnsendsms123").on("click", function () {
+            debugger
+            var message = $("#txtmessage").val();
+            var mobiles = "";
+            $('tbody tr td input[type="checkbox"]').each(function () {
+                debugger
+                var $tr = $(this).closest('tr');
+                var dk = $(this).prop('checked');
+                if (dk == true) {
+                    if (mobiles == '') {
+                        mobiles =  $(this).closest("tr").find(".mobile input").val();
+
+                    } else {
+                        mobiles = mobiles + "," + $(this).closest("tr").find(".mobile input").val();
+                    }
+
+                }
+
+            });
+            console.log(mobiles)
+            if (message == null | message == undefined | message == "") {
+                alert("Message can't be empty")
+                return false;
+            } else if (mobiles == null | mobiles == undefined | mobiles == "") {
+                alert("mobile can't be empty")
+                return false;
+            } else {
+                $.ajax({
+                    url: "/Scheduler/sendonWhatsApp",
+                    type: "GET",
+                    dataType: "json",
+                    data: {
+                        mobile: mobiles,
+                        data: message
+                    },
+                    success: function (data) {
+                             alert("message sended")
+                        $("#modelsmstemplatte").modal("hide");
+
+                    }
+                });
+            }
+        });
+        $("#btnaddnewlist").on('click', function () {
+            var rowCount = $('#tblsmstemple tr').length+1;
+            var d = '<tr><td>' + rowCount + '</td><td><input type="checkbox" class="myCheckbox" /></td><td><input type="text" class="form-control" ></td><td class="mobile"><input type="text" class="form-control " ></td><td><input type="text" class="form-control" ></td></tr>'; 
+            $('#tblsmstemple').append(d);
+        })
+        $("#btnviewtempalte").on('click', function () {
+            var template = $("#ddltemplatte").val();
+            var id = @Model[0].Id;
+          console.log(id, template);
+            $.ajax({
+                url: '@Url.Action("messagecontent", "Dropdown")',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    id: id, templatetype: template, fors:'Inquery'},
+                success: function (data) {
+                    $("#txtmessage").val(data)
+                }
+            })
+        });
+        $('.myCheckbox').change(function () {
+            var all = true;
+            $('tbody tr td input[type="checkbox"]').each(function () {
+                debugger
+                var dk = $(this).prop('checked');
+                if (dk == false) {
+                    all = false;
+                }
+
+            });
+            $('#ckall').prop('checked', all);
+        });
+        function sendsms(id) {
+            $("#smsid").val(id)
+            $("#txtmesage").val("");
+            $('tbody tr td input[type="checkbox"]').each(function () {
+                if ($(this).attr('id') == id) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+
+            });
+
+
+            $("#modelsmstemplate1").modal({ backdrop: false });
+            // $("#modelsmstemplate1").model('show');
+
+        }
+       
+        $("#ckall").on('change', function () {
+            var isChecked = $('#ckall').prop('checked');
+            
+            if (isChecked) {
+                $('tbody tr td input[type="checkbox"]').each(function () {
+
+                    $(this).prop('checked', true);
+
+                });
+            } else {
+                $('tbody tr td input[type="checkbox"]').each(function () {
+
+                    $(this).prop('checked', false);
+
+                });
+            }
+            
+        })
+
+    })
+</script>
